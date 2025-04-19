@@ -2,6 +2,7 @@
 using GameEngine.Models;
 using GameEngine.Systems;
 using GameEngine.Interfaces;
+using GameEngine.Factory;
 
 namespace CliRpgGame
 {
@@ -11,14 +12,26 @@ namespace CliRpgGame
         {
             Console.WriteLine("=== CLI RPG Mock ===");
             Console.Write("Enter your name: ");
-            string playerName = Console.ReadLine() ?? "defaultName";
+            string? input = Console.ReadLine();
+            string playerName = string.IsNullOrWhiteSpace(input)
+                ? "defaultName"   
+                : input;
 
             ICharacter player = new Character(playerName, 100, new DefaultAttackStrategy());
-            ICharacter enemy = new Enemy("Goblin", 50, new DefaultAttackStrategy());
 
-            var battle = new BattleSystem();
-            battle.Start(player, enemy);
-
+            while (true)
+            {
+                ICharacter enemy = EnemyFactory.CreateRandomEnemy();
+                var battle = new BattleSystem();
+                battle.Start(player, enemy);
+                if (!player.IsAlive)
+                {
+                    break;
+                }
+                Console.WriteLine("Press Enter to continue...");
+                Console.ReadLine();
+            }
+                       
             Console.WriteLine("Game Over! Press any key to exit.");
             Console.ReadKey();
         }

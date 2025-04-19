@@ -7,5 +7,6 @@ namespace GameEngine.Interfaces
         bool IsAlive { get; }
         int Attack();
         void TakeDamage(int amount);
+        void changeAttackStrategy(string AttackStrategyName);
     }
 }

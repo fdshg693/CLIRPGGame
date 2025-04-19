@@ -11,7 +11,9 @@ namespace GameEngine.Systems
 
             while (player.IsAlive && enemy.IsAlive)
             {
-                // ÉvÉåÉCÉÑÅ[ÇÃçUåÇ
+                Console.WriteLine("Choose Attack Strategy: Melee, Magic");
+                var attackStrategy = Console.ReadLine() ?? "";
+                player.changeAttackStrategy(attackStrategy);
                 int damage = player.Attack();
                 Console.WriteLine($"{player.Name} attacks {enemy.Name} for {damage} damage.");
                 enemy.TakeDamage(damage);
@@ -34,8 +36,6 @@ namespace GameEngine.Systems
                 }
 
                 Console.WriteLine($"Status - {player.Name}: {player.HP} HP, {enemy.Name}: {enemy.HP} HP\n");
-                Console.WriteLine("Press Enter to continue...");
-                Console.ReadLine();
             }
         }
     }
