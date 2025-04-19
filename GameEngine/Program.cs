@@ -20,10 +20,9 @@ namespace CliRpgGame
             ICharacter player = new Character(playerName, 100, new DefaultAttackStrategy());
 
             while (true)
-            {
-                ICharacter enemy = EnemyFactory.CreateRandomEnemy();
+            {                
                 var battle = new BattleSystem();
-                battle.Start(player, enemy);
+                battle.Encounter(player);
                 if (!player.IsAlive)
                 {
                     break;
