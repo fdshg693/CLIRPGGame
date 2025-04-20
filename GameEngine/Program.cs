@@ -17,7 +17,7 @@ namespace CliRpgGame
                 ? "defaultName"   
                 : input;
 
-            ICharacter player = new Character(playerName, 100, new DefaultAttackStrategy());
+            IPlayer player = new Player(playerName, 100, new DefaultAttackStrategy());
 
             while (true)
             {                
@@ -26,15 +26,10 @@ namespace CliRpgGame
                 if (!player.IsAlive)
                 {
                     break;
-                }
-                GameRecord.RecordWin();
-                GameRecord.ShowRecord();
+                }                
                 Console.WriteLine("Press Enter to Start Next Game...");
                 Console.ReadLine();
             }
-
-            GameRecord.RecordLoss();
-            GameRecord.ShowRecord();
             Console.WriteLine("Game Over! Press any key to exit.");
             Console.ReadKey();
         }

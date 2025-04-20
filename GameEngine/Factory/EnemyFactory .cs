@@ -13,14 +13,16 @@ namespace GameEngine.Factory
             => new Enemy(
                 name: "Goblin",
                 hp: 50,
-                attackStrategy: new MeleeAttackStrategy()
+                attackStrategy: new MeleeAttackStrategy(),
+                experience: 20
             );
 
         public static Enemy CreateSlime()
             => new Enemy(
                 name: "Slime",
                 hp: 30,
-                attackStrategy: new MagicAttackStrategy()
+                attackStrategy: new MagicAttackStrategy(),
+                experience: 10
             );
         public static Enemy CreateRandomEnemy()
         {
