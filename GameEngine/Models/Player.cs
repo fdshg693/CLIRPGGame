@@ -1,49 +1,50 @@
 using GameEngine.Factory;
 using GameEngine.Interfaces;
+using GameEngine.Manager;
 
 namespace GameEngine.Models
 {
     public class Player : IPlayer
     {
         public string Name { get; private set; }
-        public int HP { get; set; }
+        public int HP { get; private set; }
 
         public int BaseHP { get; private set; }
         public int BaseAP { get; private set; } = 10; // Attack Power
         public int BaseDP { get; private set; } = 5; // Defense Power
-        public int AP => BaseAP + weapon.AP; // Total Attack Power
-        public int DP => BaseDP + weapon.DP; // Total Defense Power
-        private int MaxHP => BaseHP + weapon.HP; // Total Health Points
-        public IAttackStrategy _attackStrategy { get; private set; }
-
+        private int MaxHP => BaseHP + Weapon.HP; // Total Health Points
+        public int AP => BaseAP + Weapon.AP; // Total Attack Power
+        public int DP => BaseDP + Weapon.DP; // Total Defense Power        
         public bool IsAlive => HP > 0;
-        public int TotalExperience { get; private set; } = 0;
-        public int Level { get; private set; } = 1;
+        public IAttackStrategy _AttackStrategy { get; private set; }
+                
         public int TotalGold { get; private set; } = 50;
-        public IWeapon weapon { get; private set; } // Player's weapon
+        public IWeapon Weapon { get; private set; } // Player's weapon
+        public ExperienceManager experienceManager { get; private set; } // Experience manager for the player
 
-        public Player(string name, int hp, IAttackStrategy attackStrategy)
+        public Player(string name, int hp, IAttackStrategy attackStrategy, ExperienceManager experienceManager)
         {
+            this.experienceManager = experienceManager;
             Name = name;
             HP = hp;
             BaseHP = hp;
-            _attackStrategy = attackStrategy;
-            weapon = WeaponFactory.CreateWeapon("default");
+            _AttackStrategy = attackStrategy;
+            Weapon = WeaponFactory.CreateWeapon("default");
         }
 
         public void EquipWeapon(IWeapon weapon)
         {
-            this.weapon = weapon;
+            this.Weapon = weapon;
             Console.WriteLine($"{Name} equipped a {weapon.GetType().Name}!");
         }
 
         public void Attack(ICharacter character)
         {
-            character.TakeDamage(_attackStrategy.ExecuteAttack() + BaseAP);
+            character.TakeDamage(_AttackStrategy.ExecuteAttack() + AP);
         }
         public void TakeDamage(int amount)
         {
-            int damage = amount - BaseDP;
+            int damage = amount - DP;
             HP -= damage;
             if (HP < 0) HP = 0;
         }
@@ -51,34 +52,28 @@ namespace GameEngine.Models
         {
             Console.WriteLine($"You heal {amount}");
             HP += amount;
-            if (HP > BaseHP) HP = BaseHP;
+            if (HP > MaxHP) HP = MaxHP;
         }
-        public void changeAttackStrategy(string AttackStrategyName)
+        public void ChangeAttackStrategy(string AttackStrategyName)
         {
-            _attackStrategy = AttackStrategy.GetAttackStrategy(AttackStrategyName);
+            _AttackStrategy = AttackStrategy.GetAttackStrategy(AttackStrategyName);
         }
         public void DefeatEnemy(IEnemy enemy)
         {
             Console.WriteLine($"You defeated {enemy.Name}!");
-            GainExperience(enemy.Experience);
             GainGold(enemy.Gold);
-        }
-        private void GainExperience(int amount)
-        {
-            Console.WriteLine($"You gain {amount} experience");
-            TotalExperience += amount;
-            if (TotalExperience >= 100) // Example level up condition
+            bool isLevelUp = experienceManager.GainExperience(enemy.Experience) == 1;
+            if (isLevelUp)
             {
                 LevelUp();
-            }
+            }            
         }
-        private void LevelUp()
+        public void LevelUp()
         {
-            Level++;
-            TotalExperience -= 100; // Reset experience for next level
-            HP += 10; // Increase max HP on level up
-            BaseHP += 10;
-            Console.WriteLine($"{Name} leveled up to level {Level}!");
+            HP += 10; // Example level up effect
+            BaseHP += 10; // Increase base HP
+            BaseAP += 2; // Increase base attack power
+            BaseDP += 1; // Increase base defense power
         }
         public void GainGold(int amount)
         {
@@ -99,9 +94,9 @@ namespace GameEngine.Models
             }
         }
         //disolay all information about the player
-        public void showInfo()
+        public void ShowInfo()
         {
-            Console.WriteLine($"Name: {Name} HP: {HP}/{MaxHP} Level: {Level} Total Experience: {TotalExperience} Total Gold: {TotalGold} Weapon: {weapon.Name}");
+            Console.WriteLine($"Name: {Name} HP: {HP}/{MaxHP} Total Gold: {TotalGold} Weapon: {Weapon.Name}");
 
         }
     }

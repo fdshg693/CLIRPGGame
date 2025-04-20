@@ -2,14 +2,13 @@
 {
     public interface IPlayer : ICharacter
     {
-        int TotalExperience { get; }
-        int Level { get; }
         int TotalGold { get; }
         void DefeatEnemy(IEnemy enemy);  
         void GainGold(int amount);
         void BuyPotion(int amount);
-        IWeapon weapon { get; }
+        IWeapon Weapon { get; }
         void EquipWeapon(IWeapon weapon);
-        void showInfo();
+        void ShowInfo();
+        void LevelUp();
     }
 }

@@ -57,7 +57,7 @@ namespace GameEngine.Systems
                         break;
                     }
                 }
-                player.changeAttackStrategy(AttackStrategyArray[StrategyIndex]);
+                player.ChangeAttackStrategy(AttackStrategyArray[StrategyIndex]);
 
                 //Damage calculation
                 player.Attack(enemy);
@@ -105,7 +105,27 @@ namespace GameEngine.Systems
                 }
                 else if (keyInfo.Key == ConsoleKey.D2)
                 {
-                    // Implement sell item logic
+                    Console.WriteLine("Choose Weapon");
+                    Console.WriteLine("1. SWORD");
+                    Console.WriteLine("2. AXE");
+                    Console.WriteLine("3. BOW");
+                    keyInfo = Console.ReadKey(intercept: true);
+                    if (keyInfo.Key == ConsoleKey.D1)
+                    {
+                        player.EquipWeapon(WeaponFactory.CreateWeapon("SWORD"));
+                    }
+                    else if (keyInfo.Key == ConsoleKey.D2)
+                    {
+                        player.EquipWeapon(WeaponFactory.CreateWeapon("AXE"));
+                    }
+                    else if (keyInfo.Key == ConsoleKey.D3)
+                    {
+                        player.EquipWeapon(WeaponFactory.CreateWeapon("BOW"));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice.");
+                    }
                     break;
                 }
                 else if (keyInfo.Key == ConsoleKey.D3)

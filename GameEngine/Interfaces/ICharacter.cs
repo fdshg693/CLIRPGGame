@@ -11,6 +11,6 @@ namespace GameEngine.Interfaces
         void Attack(ICharacter character);
         void TakeDamage(int amount);
         void Heal(int amount);
-        void changeAttackStrategy(string AttackStrategyName);
+        void ChangeAttackStrategy(string AttackStrategyName);
     }
 }

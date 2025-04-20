@@ -1,6 +1,7 @@
 ﻿using GameEngine.Models;
 using GameEngine.Systems;
 using GameEngine.Interfaces;
+using GameEngine.Manager;
 
 namespace CliRpgGame
 {
@@ -14,8 +15,9 @@ namespace CliRpgGame
             string playerName = string.IsNullOrWhiteSpace(input)
                 ? "defaultName"   
                 : input;
+            var experienceManager = new ExperienceManager();
 
-            IPlayer player = new Player(playerName, 100, new DefaultAttackStrategy());
+            IPlayer player = new Player(playerName, 100, new DefaultAttackStrategy(), experienceManager);
 
             while (true)
             {                
@@ -25,7 +27,7 @@ namespace CliRpgGame
                 {
                     break;
                 }
-                player.showInfo();
+                player.ShowInfo();
                 Console.WriteLine("Press Enter to Start Next Game...");
                 Console.ReadLine();
             }

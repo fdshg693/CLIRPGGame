@@ -42,7 +42,7 @@ namespace GameEngine.Models
             HP += amount;
             if (HP > BaseHP) HP = BaseHP;
         }
-        public void changeAttackStrategy(string AttackStrategyName)
+        public void ChangeAttackStrategy(string AttackStrategyName)
         {
             _attackStrategy = AttackStrategy.GetAttackStrategy(AttackStrategyName);
         }
