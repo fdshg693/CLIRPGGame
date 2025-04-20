@@ -27,10 +27,14 @@ namespace CliRpgGame
                 {
                     break;
                 }
-                Console.WriteLine("Press Enter to continue...");
+                GameRecord.RecordWin();
+                GameRecord.ShowRecord();
+                Console.WriteLine("Press Enter to Start Next Game...");
                 Console.ReadLine();
             }
-                       
+
+            GameRecord.RecordLoss();
+            GameRecord.ShowRecord();
             Console.WriteLine("Game Over! Press any key to exit.");
             Console.ReadKey();
         }

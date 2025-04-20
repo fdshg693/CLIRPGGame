@@ -1,6 +1,7 @@
 using System;
 using GameEngine.Interfaces;
 using GameEngine.Factory;
+using System.Transactions;
 
 namespace GameEngine.Systems
 {
@@ -16,8 +17,32 @@ namespace GameEngine.Systems
                 //Player's turn
                 //Choose attack strategy
                 Console.WriteLine("Choose Attack Strategy: Melee, Magic");
-                var attackStrategy = Console.ReadLine() ?? "";
-                player.changeAttackStrategy(attackStrategy);
+                var AttackStrategyArray = new string[] { "Default", "Melee", "Magic" };
+                var StrategyIndex = 0;
+                
+                while (true)
+                {
+                    var keyInfo = Console.ReadKey(intercept: true);
+                    if (keyInfo.Key == ConsoleKey.LeftArrow)
+                    {
+                        // カーソルを 1 行上に移動（\x1b[1A）して、その行をクリア（\x1b[2K）
+                        clearLastOutput();
+                        StrategyIndex = (StrategyIndex - 1 + AttackStrategyArray.Length) % AttackStrategyArray.Length;
+                        Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
+                    }
+                    else if (keyInfo.Key == ConsoleKey.RightArrow)
+                    {
+                        clearLastOutput();
+                        StrategyIndex = (StrategyIndex + 1) % AttackStrategyArray.Length;
+                        Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
+                    }
+                    else if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        clearLastOutput();
+                        break;
+                    }
+                }
+                player.changeAttackStrategy(AttackStrategyArray[StrategyIndex]);
 
                 //Damage calculation
                 int damage = player.Attack();
@@ -47,20 +72,24 @@ namespace GameEngine.Systems
         public void Encounter(ICharacter player)
         {
             Random random = new Random();
-            var eventType = random.Next(1, 3);
+            var eventType = random.Next(1, 4);
             switch (eventType)
             {
                 case 1:
+                    Console.WriteLine("You heal a littele");
+                    player.Heal(random.Next(5, 15));
+                    Console.WriteLine($"Status - {player.Name}: {player.HP} HP");
+                    break;
+                default:
                     Console.WriteLine("You encounter a wild enemy!");
                     Start(player);
                     break;
-                case 2:
-                    Console.WriteLine("You find a treasure chest!");
-                    // Implement treasure logic here
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("Invalid event type");
             }
+        }
+        public void clearLastOutput()
+        {
+            Console.Write("\x1b[1A");  // 上へカーソル移動
+            Console.Write("\x1b[2K");  // 行全体をクリア
         }
     }
 }
