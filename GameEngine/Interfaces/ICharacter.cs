@@ -4,8 +4,10 @@ namespace GameEngine.Interfaces
     {
         string Name { get; }
         int HP { get; }
+        int AP { get; }
+        int DP { get; }
         bool IsAlive { get; }
-        int Attack();
+        void Attack(ICharacter character);
         void TakeDamage(int amount);
         void Heal(int amount);
         void changeAttackStrategy(string AttackStrategyName);

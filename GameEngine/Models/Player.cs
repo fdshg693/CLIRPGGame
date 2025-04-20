@@ -8,6 +8,8 @@ namespace GameEngine.Models
         public int HP { get; private set; }
 
         private int _maxHP { get; set; }
+        public int AP { get; private set; } = 10; // Attack Power
+        public int DP { get; private set; } = 5; // Defense Power
         public IAttackStrategy _attackStrategy { get; private set; }
 
         public bool IsAlive => HP > 0;
@@ -23,11 +25,14 @@ namespace GameEngine.Models
             _attackStrategy = attackStrategy;
         }
 
-        public int Attack() => _attackStrategy.ExecuteAttack();
-
+        public void Attack(ICharacter character)
+        {
+            character.TakeDamage(_attackStrategy.ExecuteAttack() + AP);
+        }
         public void TakeDamage(int amount)
         {
-            HP -= amount;
+            int damage = amount - DP;
+            HP -= damage;
             if (HP < 0) HP = 0;
         }
         public void Heal(int amount)

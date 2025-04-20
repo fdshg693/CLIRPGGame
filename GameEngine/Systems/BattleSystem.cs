@@ -14,8 +14,8 @@ namespace GameEngine.Systems
             switch (eventType)
             {
                 case 1:
-                    Shop(player);
-                    player.GainGold(random.Next(1, 10));
+                    player.GainGold(random.Next(10, 20));
+                    Shop(player);                    
                     Console.WriteLine($"Status - {player.Name}: {player.HP} HP");
                     break;
                 default:
@@ -62,9 +62,8 @@ namespace GameEngine.Systems
                 player.changeAttackStrategy(AttackStrategyArray[StrategyIndex]);
 
                 //Damage calculation
-                int damage = player.Attack();
-                Console.WriteLine($"{player.Name} attacks {enemy.Name} by {AttackStrategyArray[StrategyIndex]} for {damage} damage.");
-                enemy.TakeDamage(damage);
+                player.Attack(enemy);
+                Console.WriteLine($"{player.Name} attacks {enemy.Name} by {AttackStrategyArray[StrategyIndex]}");
 
                 if (!enemy.IsAlive)
                 {
@@ -75,9 +74,8 @@ namespace GameEngine.Systems
                 }
 
                 //Enemy's turn
-                int enemyDamage = enemy.Attack();
-                Console.WriteLine($"{enemy.Name} attacks {player.Name} for {enemyDamage} damage.");
-                player.TakeDamage(enemyDamage);
+                enemy.Attack(player);
+                Console.WriteLine($"{enemy.Name} attacks {player.Name}");
 
                 if (!player.IsAlive)
                 {

@@ -17,19 +17,17 @@ namespace GameEngine.Models
     }
     public class DefaultAttackStrategy : IAttackStrategy
     {
-        private static readonly Random _rnd = new Random();
-        public int ExecuteAttack() => _rnd.Next(5, 16);
+        public int ExecuteAttack() => new Random().Next(8, 10);
         
     }
     public class MeleeAttackStrategy : IAttackStrategy
     {
-        private static readonly Random _rnd = new Random();
-        public int ExecuteAttack() => _rnd.Next(12, 13);
+        public int ExecuteAttack() => new Random().Next(10, 16);
     }
 
     public class MagicAttackStrategy : IAttackStrategy
     {
-        private static readonly Random _rnd = new Random();
-        public int ExecuteAttack() => _rnd.Next(0, 30);
+        public int ExecuteAttack() => new Random().Next(0, 25);
     }
+
 }
