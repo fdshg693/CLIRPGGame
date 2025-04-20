@@ -1,7 +1,5 @@
-using System;
 using GameEngine.Interfaces;
 using GameEngine.Factory;
-using System.Transactions;
 
 namespace GameEngine.Systems
 {
@@ -65,11 +63,13 @@ namespace GameEngine.Systems
                 player.Attack(enemy);
                 Console.WriteLine($"{player.Name} attacks {enemy.Name} by {AttackStrategyArray[StrategyIndex]}");
 
+                //Player wins
                 if (!enemy.IsAlive)
                 {
                     Console.WriteLine($"{enemy.Name} has been defeated!\n");
                     GameRecord.RecordWin();
                     GameRecord.ShowRecord();
+                    player.DefeatEnemy(enemy);
                     break;
                 }
 
@@ -77,12 +77,12 @@ namespace GameEngine.Systems
                 enemy.Attack(player);
                 Console.WriteLine($"{enemy.Name} attacks {player.Name}");
 
+                //Player loses
                 if (!player.IsAlive)
                 {
                     Console.WriteLine($"{player.Name} has fallen...\n");
                     GameRecord.RecordLoss();
-                    GameRecord.ShowRecord();
-                    player.GainExperience(enemy.Experience);
+                    GameRecord.ShowRecord();                    
                     break;
                 }
 
@@ -93,7 +93,7 @@ namespace GameEngine.Systems
         {
             Console.WriteLine("Welcome to the shop!");
             Console.WriteLine("1. Buy Item");
-            Console.WriteLine("2. Sell Item");
+            Console.WriteLine("2. Buy Weapon");
             Console.WriteLine("3. Exit Shop");
             while (true)
             {

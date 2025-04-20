@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameEngine.Interfaces
+﻿namespace GameEngine.Interfaces
 {
     public interface IPlayer : ICharacter
     {
         int TotalExperience { get; }
         int Level { get; }
         int TotalGold { get; }
-        void GainExperience(int amount);
-        void LevelUp();        
+        void DefeatEnemy(IEnemy enemy);  
         void GainGold(int amount);
         void BuyPotion(int amount);
+        IWeapon weapon { get; }
+        void EquipWeapon(IWeapon weapon);
+        void showInfo();
     }
 }

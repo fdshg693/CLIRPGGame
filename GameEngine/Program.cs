@@ -1,8 +1,6 @@
-﻿using System;
-using GameEngine.Models;
+﻿using GameEngine.Models;
 using GameEngine.Systems;
 using GameEngine.Interfaces;
-using GameEngine.Factory;
 
 namespace CliRpgGame
 {
@@ -26,7 +24,8 @@ namespace CliRpgGame
                 if (!player.IsAlive)
                 {
                     break;
-                }                
+                }
+                player.showInfo();
                 Console.WriteLine("Press Enter to Start Next Game...");
                 Console.ReadLine();
             }

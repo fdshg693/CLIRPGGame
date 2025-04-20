@@ -1,15 +1,11 @@
 ﻿using GameEngine.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GameEngine.Interfaces;
 
 namespace GameEngine.Factory
 {
     public static class EnemyFactory
     {
-        public static Enemy CreateGoblin()
+        public static IEnemy CreateGoblin()
             => new Enemy(
                 name: "Goblin",
                 hp: 30,
@@ -19,7 +15,7 @@ namespace GameEngine.Factory
                 dP: 2
             );
 
-        public static Enemy CreateSlime()
+        public static IEnemy CreateSlime()
             => new Enemy(
                 name: "Slime",
                 hp: 10,
@@ -28,7 +24,7 @@ namespace GameEngine.Factory
                 aP: 4,
                 dP: 1
             );
-        public static Enemy CreateRandomEnemy()
+        public static IEnemy CreateRandomEnemy()
         {
             Random random = new Random();
             int enemyType = random.Next(1, 3); // 1 for Goblin, 2 for Slime
