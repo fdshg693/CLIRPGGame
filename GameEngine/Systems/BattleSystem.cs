@@ -7,6 +7,23 @@ namespace GameEngine.Systems
 {
     public class BattleSystem
     {
+        public void Encounter(IPlayer player)
+        {
+            Random random = new Random();
+            var eventType = random.Next(1, 4);
+            switch (eventType)
+            {
+                case 1:
+                    Shop(player);
+                    player.GainGold(random.Next(1, 10));
+                    Console.WriteLine($"Status - {player.Name}: {player.HP} HP");
+                    break;
+                default:
+                    Console.WriteLine("You encounter a wild enemy!");
+                    Start(player);
+                    break;
+            }
+        }
         public void Start(IPlayer player)
         {
             IEnemy enemy = EnemyFactory.CreateRandomEnemy();
@@ -73,22 +90,30 @@ namespace GameEngine.Systems
 
                 Console.WriteLine($"Status - {player.Name}: {player.HP} HP, {enemy.Name}: {enemy.HP} HP\n");
             }
-        }
-        public void Encounter(IPlayer player)
+        }        
+        public void Shop(IPlayer player)
         {
-            Random random = new Random();
-            var eventType = random.Next(1, 4);
-            switch (eventType)
+            Console.WriteLine("Welcome to the shop!");
+            Console.WriteLine("1. Buy Item");
+            Console.WriteLine("2. Sell Item");
+            Console.WriteLine("3. Exit Shop");
+            while (true)
             {
-                case 1:
-                    Console.WriteLine("You heal a little");
-                    player.Heal(random.Next(5, 15));
-                    Console.WriteLine($"Status - {player.Name}: {player.HP} HP");
+                var keyInfo = Console.ReadKey(intercept: true);
+                if (keyInfo.Key == ConsoleKey.D1)
+                {
+                    player.BuyPotion(10);
                     break;
-                default:
-                    Console.WriteLine("You encounter a wild enemy!");
-                    Start(player);
+                }
+                else if (keyInfo.Key == ConsoleKey.D2)
+                {
+                    // Implement sell item logic
                     break;
+                }
+                else if (keyInfo.Key == ConsoleKey.D3)
+                {
+                    break;
+                }
             }
         }
         public void clearLastOutput()

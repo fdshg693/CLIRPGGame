@@ -12,7 +12,7 @@ namespace GameEngine.Factory
         public static Enemy CreateGoblin()
             => new Enemy(
                 name: "Goblin",
-                hp: 50,
+                hp: 30,
                 attackStrategy: new MeleeAttackStrategy(),
                 experience: 20
             );
@@ -20,7 +20,7 @@ namespace GameEngine.Factory
         public static Enemy CreateSlime()
             => new Enemy(
                 name: "Slime",
-                hp: 30,
+                hp: 10,
                 attackStrategy: new MagicAttackStrategy(),
                 experience: 10
             );

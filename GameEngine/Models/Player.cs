@@ -13,6 +13,7 @@ namespace GameEngine.Models
         public bool IsAlive => HP > 0;
         public int TotalExperience { get; private set; } = 0;
         public int Level { get; private set; } = 1;
+        public int TotalGold { get; private set; } = 0;
 
         public Player(string name, int hp, IAttackStrategy attackStrategy)
         {
@@ -31,6 +32,7 @@ namespace GameEngine.Models
         }
         public void Heal(int amount)
         {
+            Console.WriteLine($"You heal {amount}");
             HP += amount;
             if (HP > _maxHP) HP = _maxHP;
         }
@@ -44,6 +46,24 @@ namespace GameEngine.Models
             if (TotalExperience >= 100) // Example level up condition
             {
                 LevelUp();
+            }
+        }
+        public void GainGold(int amount)
+        {
+            Console.WriteLine($"You gain {amount} gold");
+            TotalGold += amount;
+        }
+        public void BuyPotion(int amount)
+        {
+            if(TotalGold >= amount)
+            {
+                TotalGold -= amount;
+                Heal(20); // Example potion effect
+                Console.WriteLine($"{Name} bought a potion and healed 20 HP!");
+            }
+            else
+            {
+                Console.WriteLine($"{Name} does not have enough gold to buy a potion.");
             }
         }
         public void LevelUp()

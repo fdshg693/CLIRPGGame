@@ -13,6 +13,7 @@ namespace GameEngine.Models
 
         public bool IsAlive => HP > 0;
         public int Experience { get; private set; } = 0;
+        public int Gold { get; private set; } = 0;
 
         public Enemy(string name, int hp, IAttackStrategy attackStrategy, int experience)
         {
@@ -21,6 +22,7 @@ namespace GameEngine.Models
             _maxHP = hp;
             _attackStrategy = attackStrategy;
             Experience = experience;
+            Gold = (experience / 2) + new Random().Next(1, 10); 
         }
         public int Attack() => _attackStrategy.ExecuteAttack();
         public void TakeDamage(int amount)

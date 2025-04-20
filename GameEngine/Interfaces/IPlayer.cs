@@ -10,7 +10,10 @@ namespace GameEngine.Interfaces
     {
         int TotalExperience { get; }
         int Level { get; }
+        int TotalGold { get; }
         void GainExperience(int amount);
-        void LevelUp();
+        void LevelUp();        
+        void GainGold(int amount);
+        void BuyPotion(int amount);
     }
 }
