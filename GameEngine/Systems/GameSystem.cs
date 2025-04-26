@@ -3,7 +3,7 @@ using GameEngine.Interfaces;
 
 namespace GameEngine.Systems
 {
-    public class BattleSystem
+    public class GameSystem
     {
         public void Encounter(IPlayer player)
         {
@@ -15,14 +15,15 @@ namespace GameEngine.Systems
                     player.GainGold(random.Next(10, 20));
                     ShopSystem.Shop(player);
                     Console.WriteLine($"Status - {player.Name}: {player.HP} HP");
+                    RestSystem.UsePotion(player);
                     break;
                 default:
                     Console.WriteLine("You encounter a wild enemy!");
-                    Start(player);
+                    BattleStart(player);
                     break;
             }
         }
-        public void Start(IPlayer player)
+        public void BattleStart(IPlayer player)
         {
             IEnemy enemy = EnemyFactory.CreateRandomEnemy();
             Console.WriteLine($"A wild {enemy.Name} appears!\n");

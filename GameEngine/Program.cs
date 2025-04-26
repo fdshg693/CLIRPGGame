@@ -22,7 +22,7 @@ namespace CliRpgGame
 
             while (true)
             {
-                var battle = new BattleSystem();
+                var battle = new GameSystem();
                 battle.Encounter(player);
                 if (!player.IsAlive)
                 {

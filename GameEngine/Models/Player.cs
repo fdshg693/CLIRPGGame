@@ -76,24 +76,21 @@ namespace GameEngine.Models
             BaseAP += 2; // Increase base attack power
             BaseDP += 1; // Increase base defense power
         }
-        public void GainGold(int amount)
-        {
-            inventoryManager.GainGold(amount);
-        }
-        public void BuyPotion(int amount)
-        {
-            inventoryManager.BuyPotion(amount);
-        }
+        public void GainGold(int amount) => inventoryManager.GainGold(amount);
+        public void BuyPotion(int amount) => inventoryManager.BuyPotion(amount);
         public void UsePotion(int amount)
         {
             inventoryManager.UsePotion(amount);
+            Heal(10 * amount);
         }
         //disolay all information about the player
         public void ShowInfo()
         {
+            Console.WriteLine("-------------------------------------------------------------------");
             Console.WriteLine($"Name: {Name} HP: {HP}/{MaxHP} Weapon: {Weapon.Name}");
             inventoryManager.ShowInfo();
-
+            experienceManager.ShowInfo();
+            Console.WriteLine("-------------------------------------------------------------------");
         }
     }
 }
