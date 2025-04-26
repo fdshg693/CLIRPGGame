@@ -13,7 +13,7 @@ namespace GameEngine.Systems
             {
                 case 1:
                     player.GainGold(random.Next(10, 20));
-                    Shop(player);                    
+                    ShopSystem.Shop(player);
                     Console.WriteLine($"Status - {player.Name}: {player.HP} HP");
                     break;
                 default:
@@ -38,24 +38,26 @@ namespace GameEngine.Systems
                 while (true)
                 {
                     var keyInfo = Console.ReadKey(intercept: true);
-                    if (keyInfo.Key == ConsoleKey.LeftArrow)
-                    {
-                        // カーソルを 1 行上に移動（\x1b[1A）して、その行をクリア（\x1b[2K）
-                        clearLastOutput();
-                        StrategyIndex = (StrategyIndex - 1 + AttackStrategyArray.Length) % AttackStrategyArray.Length;
-                        Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
-                    }
-                    else if (keyInfo.Key == ConsoleKey.RightArrow)
+                    if (new[] { ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter}.Contains(keyInfo.Key))
                     {
                         clearLastOutput();
-                        StrategyIndex = (StrategyIndex + 1) % AttackStrategyArray.Length;
-                        Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
-                    }
-                    else if (keyInfo.Key == ConsoleKey.Enter)
-                    {
-                        clearLastOutput();
-                        break;
-                    }
+                        if (keyInfo.Key == ConsoleKey.LeftArrow)
+                        {
+                            // カーソルを 1 行上に移動（\x1b[1A）して、その行をクリア（\x1b[2K）
+
+                            StrategyIndex = (StrategyIndex - 1 + AttackStrategyArray.Length) % AttackStrategyArray.Length;
+                            Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
+                        }
+                        else if (keyInfo.Key == ConsoleKey.RightArrow)
+                        {
+                            StrategyIndex = (StrategyIndex + 1) % AttackStrategyArray.Length;
+                            Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
+                        }
+                        else if (keyInfo.Key == ConsoleKey.Enter)
+                        {
+                            break;
+                        }
+                    }                    
                 }
                 player.ChangeAttackStrategy(AttackStrategyArray[StrategyIndex]);
 
@@ -87,51 +89,6 @@ namespace GameEngine.Systems
                 }
 
                 Console.WriteLine($"Status - {player.Name}: {player.HP} HP, {enemy.Name}: {enemy.HP} HP\n");
-            }
-        }        
-        public void Shop(IPlayer player)
-        {
-            Console.WriteLine("Welcome to the shop!");
-            Console.WriteLine("1. Buy Item");
-            Console.WriteLine("2. Buy Weapon");
-            Console.WriteLine("3. Exit Shop");
-            while (true)
-            {
-                var keyInfo = Console.ReadKey(intercept: true);
-                if (keyInfo.Key == ConsoleKey.D1)
-                {
-                    player.BuyPotion(10);
-                    break;
-                }
-                else if (keyInfo.Key == ConsoleKey.D2)
-                {
-                    Console.WriteLine("Choose Weapon");
-                    Console.WriteLine("1. SWORD");
-                    Console.WriteLine("2. AXE");
-                    Console.WriteLine("3. BOW");
-                    keyInfo = Console.ReadKey(intercept: true);
-                    if (keyInfo.Key == ConsoleKey.D1)
-                    {
-                        player.EquipWeapon(WeaponFactory.CreateWeapon("SWORD"));
-                    }
-                    else if (keyInfo.Key == ConsoleKey.D2)
-                    {
-                        player.EquipWeapon(WeaponFactory.CreateWeapon("AXE"));
-                    }
-                    else if (keyInfo.Key == ConsoleKey.D3)
-                    {
-                        player.EquipWeapon(WeaponFactory.CreateWeapon("BOW"));
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid choice.");
-                    }
-                    break;
-                }
-                else if (keyInfo.Key == ConsoleKey.D3)
-                {
-                    break;
-                }
             }
         }
         public void clearLastOutput()

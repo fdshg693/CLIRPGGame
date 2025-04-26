@@ -2,6 +2,7 @@
 using GameEngine.Systems;
 using GameEngine.Interfaces;
 using GameEngine.Manager;
+using System.ComponentModel.DataAnnotations;
 
 namespace CliRpgGame
 {
@@ -16,8 +17,9 @@ namespace CliRpgGame
                 ? "defaultName"   
                 : input;
             var experienceManager = new ExperienceManager();
+            var inventoryManager = new InventoryManager();
 
-            IPlayer player = new Player(playerName, 100, new DefaultAttackStrategy(), experienceManager);
+            IPlayer player = new Player(playerName, 100, new DefaultAttackStrategy(), experienceManager, inventoryManager);
 
             while (true)
             {                

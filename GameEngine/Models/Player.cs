@@ -17,14 +17,15 @@ namespace GameEngine.Models
         public int DP => BaseDP + Weapon.DP; // Total Defense Power        
         public bool IsAlive => HP > 0;
         public IAttackStrategy _AttackStrategy { get; private set; }
-                
-        public int TotalGold { get; private set; } = 50;
+
+        public InventoryManager inventoryManager { get; private set; }
         public IWeapon Weapon { get; private set; } // Player's weapon
         public ExperienceManager experienceManager { get; private set; } // Experience manager for the player
 
-        public Player(string name, int hp, IAttackStrategy attackStrategy, ExperienceManager experienceManager)
+        public Player(string name, int hp, IAttackStrategy attackStrategy, ExperienceManager experienceManager, InventoryManager inventoryManager)
         {
             this.experienceManager = experienceManager;
+            this.inventoryManager = inventoryManager;
             Name = name;
             HP = hp;
             BaseHP = hp;
@@ -77,26 +78,21 @@ namespace GameEngine.Models
         }
         public void GainGold(int amount)
         {
-            Console.WriteLine($"You gain {amount} gold");
-            TotalGold += amount;
+            inventoryManager.GainGold(amount);
         }
         public void BuyPotion(int amount)
         {
-            if(TotalGold >= amount)
-            {
-                TotalGold -= amount;
-                Heal(20); // Example potion effect
-                Console.WriteLine($"{Name} bought a potion and healed 20 HP!");
-            }
-            else
-            {
-                Console.WriteLine($"{Name} does not have enough gold to buy a potion.");
-            }
+            inventoryManager.BuyPotion(amount);
+        }
+        public void UsePotion(int amount)
+        {
+            inventoryManager.UsePotion(amount);
         }
         //disolay all information about the player
         public void ShowInfo()
         {
-            Console.WriteLine($"Name: {Name} HP: {HP}/{MaxHP} Total Gold: {TotalGold} Weapon: {Weapon.Name}");
+            Console.WriteLine($"Name: {Name} HP: {HP}/{MaxHP} Weapon: {Weapon.Name}");
+            inventoryManager.ShowInfo();
 
         }
     }
