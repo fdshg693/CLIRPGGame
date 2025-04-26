@@ -1,10 +1,5 @@
 ﻿using GameEngine.Factory;
 using GameEngine.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Systems
 {
@@ -21,17 +16,8 @@ namespace GameEngine.Systems
                 var keyInfo = Console.ReadKey(intercept: true);
                 if (keyInfo.Key == ConsoleKey.D1)
                 {
-                    Console.Write("How many?");
-                    try
-                    {
-                        int? input = int.Parse(Console.ReadLine() ?? "0");
-                        player.BuyPotion(input ?? 0);
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("Invalid input. Please enter a number.");
-                        int? input = int.Parse(Console.ReadLine() ?? "0");
-                    }
+                    var potionAmount = UserInteraction.ReadPositiveInteger("Enter the amount of Potuion you want to buy: ");
+                    player.BuyPotion(potionAmount);
                     break;
                 }
                 else if (keyInfo.Key == ConsoleKey.D2)
@@ -64,11 +50,6 @@ namespace GameEngine.Systems
                     break;
                 }
             }
-        }
-        public static void clearLastOutput()
-        {
-            Console.Write("\x1b[1A");  // 上へカーソル移動
-            Console.Write("\x1b[2K");  // 行全体をクリア
         }
     }
 }

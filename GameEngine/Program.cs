@@ -1,8 +1,7 @@
-﻿using GameEngine.Models;
-using GameEngine.Systems;
-using GameEngine.Interfaces;
+﻿using GameEngine.Interfaces;
 using GameEngine.Manager;
-using System.ComponentModel.DataAnnotations;
+using GameEngine.Models;
+using GameEngine.Systems;
 
 namespace CliRpgGame
 {
@@ -14,7 +13,7 @@ namespace CliRpgGame
             Console.Write("Enter your name: ");
             string? input = Console.ReadLine();
             string playerName = string.IsNullOrWhiteSpace(input)
-                ? "defaultName"   
+                ? "defaultName"
                 : input;
             var experienceManager = new ExperienceManager();
             var inventoryManager = new InventoryManager();
@@ -22,7 +21,7 @@ namespace CliRpgGame
             IPlayer player = new Player(playerName, 100, new DefaultAttackStrategy(), experienceManager, inventoryManager);
 
             while (true)
-            {                
+            {
                 var battle = new BattleSystem();
                 battle.Encounter(player);
                 if (!player.IsAlive)

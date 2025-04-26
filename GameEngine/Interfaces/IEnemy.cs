@@ -1,6 +1,6 @@
 ﻿namespace GameEngine.Interfaces
 {
-    public interface IEnemy: ICharacter
+    public interface IEnemy : ICharacter
     {
         int Experience { get; }
         int Gold { get; }

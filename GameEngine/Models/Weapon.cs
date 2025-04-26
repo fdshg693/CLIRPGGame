@@ -2,7 +2,7 @@
 
 namespace GameEngine.Models
 {
-    public class Weapon: IWeapon
+    public class Weapon : IWeapon
     {
         public int HP { get; private set; } // Health Points
         public int AP { get; private set; } // Attack Power

@@ -1,6 +1,4 @@
-﻿using GameEngine.Interfaces;
-
-namespace GameEngine.Manager
+﻿namespace GameEngine.Manager
 {
     public class ExperienceManager
     {

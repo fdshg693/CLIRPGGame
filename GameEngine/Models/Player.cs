@@ -67,7 +67,7 @@ namespace GameEngine.Models
             if (isLevelUp)
             {
                 LevelUp();
-            }            
+            }
         }
         public void LevelUp()
         {

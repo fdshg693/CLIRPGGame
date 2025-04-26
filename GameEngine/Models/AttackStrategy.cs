@@ -17,7 +17,7 @@ namespace GameEngine.Models
     public class DefaultAttackStrategy : IAttackStrategy
     {
         public int ExecuteAttack() => new Random().Next(8, 10);
-        
+
     }
     public class MeleeAttackStrategy : IAttackStrategy
     {

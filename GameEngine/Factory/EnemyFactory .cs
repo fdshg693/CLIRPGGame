@@ -1,5 +1,5 @@
-﻿using GameEngine.Models;
-using GameEngine.Interfaces;
+﻿using GameEngine.Interfaces;
+using GameEngine.Models;
 
 namespace GameEngine.Factory
 {

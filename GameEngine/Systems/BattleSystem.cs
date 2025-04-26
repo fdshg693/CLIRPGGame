@@ -1,5 +1,5 @@
-using GameEngine.Interfaces;
 using GameEngine.Factory;
+using GameEngine.Interfaces;
 
 namespace GameEngine.Systems
 {
@@ -31,16 +31,16 @@ namespace GameEngine.Systems
             {
                 //Player's turn
                 //Choose attack strategy                
-                var AttackStrategyArray = new string[] { "Default", "Melee", "Magic" };                
+                var AttackStrategyArray = new string[] { "Default", "Melee", "Magic" };
                 var StrategyIndex = 0;
                 Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
 
                 while (true)
                 {
                     var keyInfo = Console.ReadKey(intercept: true);
-                    if (new[] { ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter}.Contains(keyInfo.Key))
+                    if (new[] { ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter }.Contains(keyInfo.Key))
                     {
-                        clearLastOutput();
+                        UserInteraction.clearLastOutput();
                         if (keyInfo.Key == ConsoleKey.LeftArrow)
                         {
                             // カーソルを 1 行上に移動（\x1b[1A）して、その行をクリア（\x1b[2K）
@@ -57,7 +57,7 @@ namespace GameEngine.Systems
                         {
                             break;
                         }
-                    }                    
+                    }
                 }
                 player.ChangeAttackStrategy(AttackStrategyArray[StrategyIndex]);
 
@@ -84,17 +84,12 @@ namespace GameEngine.Systems
                 {
                     Console.WriteLine($"{player.Name} has fallen...\n");
                     GameRecord.RecordLoss();
-                    GameRecord.ShowRecord();                    
+                    GameRecord.ShowRecord();
                     break;
                 }
 
                 Console.WriteLine($"Status - {player.Name}: {player.HP} HP, {enemy.Name}: {enemy.HP} HP\n");
             }
-        }
-        public void clearLastOutput()
-        {
-            Console.Write("\x1b[1A");  // 上へカーソル移動
-            Console.Write("\x1b[2K");  // 行全体をクリア
         }
     }
 }
