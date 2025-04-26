@@ -1,4 +1,3 @@
-using GameEngine.Factory;
 using GameEngine.Interfaces;
 using GameEngine.Manager;
 
@@ -12,14 +11,13 @@ namespace GameEngine.Models
         public int BaseHP { get; private set; }
         public int BaseAP { get; private set; } = 10; // Attack Power
         public int BaseDP { get; private set; } = 5; // Defense Power
-        private int MaxHP => BaseHP + Weapon.HP; // Total Health Points
-        public int AP => BaseAP + Weapon.AP; // Total Attack Power
-        public int DP => BaseDP + Weapon.DP; // Total Defense Power        
+        private int MaxHP => BaseHP + inventoryManager.Weapon.HP; // Total Health Points
+        public int AP => BaseAP + inventoryManager.Weapon.AP; // Total Attack Power
+        public int DP => BaseDP + inventoryManager.Weapon.DP; // Total Defense Power        
         public bool IsAlive => HP > 0;
         public IAttackStrategy _AttackStrategy { get; private set; }
 
         public InventoryManager inventoryManager { get; private set; }
-        public IWeapon Weapon { get; private set; } // Player's weapon
         public ExperienceManager experienceManager { get; private set; } // Experience manager for the player
 
         public Player(string name, int hp, IAttackStrategy attackStrategy, ExperienceManager experienceManager, InventoryManager inventoryManager)
@@ -30,13 +28,11 @@ namespace GameEngine.Models
             HP = hp;
             BaseHP = hp;
             _AttackStrategy = attackStrategy;
-            Weapon = WeaponFactory.CreateWeapon("default");
         }
 
         public void EquipWeapon(IWeapon weapon)
         {
-            this.Weapon = weapon;
-            Console.WriteLine($"{Name} equipped a {weapon.GetType().Name}!");
+            inventoryManager.EquipWeapon(weapon);
         }
 
         public void Attack(ICharacter character)
@@ -87,7 +83,7 @@ namespace GameEngine.Models
         public void ShowInfo()
         {
             Console.WriteLine("-------------------------------------------------------------------");
-            Console.WriteLine($"Name: {Name} HP: {HP}/{MaxHP} Weapon: {Weapon.Name}");
+            Console.WriteLine($"Name: {Name} HP: {HP}/{MaxHP}");
             inventoryManager.ShowInfo();
             experienceManager.ShowInfo();
             Console.WriteLine("-------------------------------------------------------------------");

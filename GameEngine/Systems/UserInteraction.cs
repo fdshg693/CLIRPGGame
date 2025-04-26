@@ -10,13 +10,18 @@
         /// <summary>
         /// コンソールから「1以上の整数」を入力させ、正しい値が来るまで繰り返すメソッド
         /// </summary>
-        public static int ReadPositiveInteger(string prompt = "正の整数を入力してください: ")
+        public static int? ReadPositiveInteger(string prompt = "正の整数を入力してください: ", string interruptKeyWord = "Quit")
         {
             while (true)
             {
+                Console.WriteLine($"{interruptKeyWord}を入力することで、入力せずに次に進みます");
                 Console.Write(prompt);
                 string? line = Console.ReadLine();
-
+                // Quit が入力されたら、ループを抜ける
+                if (line == interruptKeyWord)
+                {
+                    return null;
+                }
                 // null もしくは空文字の場合も弾く
                 if (string.IsNullOrWhiteSpace(line))
                 {

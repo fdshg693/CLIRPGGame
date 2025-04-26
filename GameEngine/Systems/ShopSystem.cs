@@ -16,8 +16,11 @@ namespace GameEngine.Systems
                 var keyInfo = Console.ReadKey(intercept: true);
                 if (keyInfo.Key == ConsoleKey.D1)
                 {
-                    var potionAmount = UserInteraction.ReadPositiveInteger("Enter the amount of Potuion you want to buy: ");
-                    player.BuyPotion(potionAmount);
+                    int? potionAmount = UserInteraction.ReadPositiveInteger("Enter the amount of Potuion you want to buy: ");
+                    if (potionAmount != null)
+                    {
+                        player.BuyPotion(potionAmount.Value);
+                    }
                     break;
                 }
                 else if (keyInfo.Key == ConsoleKey.D2)

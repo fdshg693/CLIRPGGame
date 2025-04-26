@@ -43,10 +43,16 @@ namespace GameEngine.Manager
                 Console.WriteLine("Not enough potions!");
             }
         }
+        public void EquipWeapon(IWeapon weapon)
+        {
+            Weapon = weapon;
+            Console.WriteLine($"You equipped a {weapon.Name}");
+        }
         public void ShowInfo()
         {
             Console.WriteLine($"Total Gold: {TotalGold}");
             Console.WriteLine($"Total Potions: {TotalPotions}");
+            Console.WriteLine($"Equipped Weapon: {Weapon.Name}");
         }
     }
 }
