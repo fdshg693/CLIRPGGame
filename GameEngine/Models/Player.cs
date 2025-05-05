@@ -5,88 +5,83 @@ namespace GameEngine.Models
 {
     public class Player : IPlayer
     {
-        public string Name { get; private set; }
-        public int HP { get; private set; }
+        public string Name { get; }
+        private readonly HealthManager _health;
+        private readonly InventoryManager _inventory;
+        private readonly ExperienceManager _experience;
+        private IAttackStrategy _attackStrategy;
+        private int BaseAP { get; set; } = 10;
 
-        public int BaseHP { get; private set; }
-        public int BaseAP { get; private set; } = 10; // Attack Power
-        public int BaseDP { get; private set; } = 5; // Defense Power
-        private int MaxHP => BaseHP + inventoryManager.Weapon.HP; // Total Health Points
-        public int AP => BaseAP + inventoryManager.Weapon.AP; // Total Attack Power
-        public int DP => BaseDP + inventoryManager.Weapon.DP; // Total Defense Power        
-        public bool IsAlive => HP > 0;
-        public IAttackStrategy _AttackStrategy { get; private set; }
+        // ヘルス関係はすべて _health に切り出し
+        public int HP => _health.CurrentHP;
+        public int MaxHP => _health.MaxHP;
+        public int DP => _health.TotalDP;
+        public bool IsAlive => _health.IsAlive;
 
-        public InventoryManager inventoryManager { get; private set; }
-        public ExperienceManager experienceManager { get; private set; } // Experience manager for the player
+        public int AP => BaseAP + _inventory.Weapon.AP;
 
-        public Player(string name, int hp, IAttackStrategy attackStrategy, ExperienceManager experienceManager, InventoryManager inventoryManager)
+        public Player(
+            string name,
+            int initialHP,
+            IAttackStrategy attackStrategy,
+            ExperienceManager experienceManager,
+            InventoryManager inventoryManager)
         {
-            this.experienceManager = experienceManager;
-            this.inventoryManager = inventoryManager;
             Name = name;
-            HP = hp;
-            BaseHP = hp;
-            _AttackStrategy = attackStrategy;
+            _attackStrategy = attackStrategy;
+            _experience = experienceManager;
+            _inventory = inventoryManager;
+            _health = new HealthManager(baseHP: initialHP, baseDP: 5, equipProvider: _inventory);
         }
 
-        public void EquipWeapon(IWeapon weapon)
+        public void EquipWeapon(IWeapon weapon) => _inventory.EquipWeapon(weapon);
+
+        public void Attack(ICharacter target)
         {
-            inventoryManager.EquipWeapon(weapon);
+            int damage = _attackStrategy.ExecuteAttack() + AP;
+            target.TakeDamage(damage);
         }
 
-        public void Attack(ICharacter character)
-        {
-            character.TakeDamage(_AttackStrategy.ExecuteAttack() + AP);
-        }
-        public void TakeDamage(int amount)
-        {
-            int damage = amount - DP;
-            HP -= damage;
-            if (HP < 0) HP = 0;
-        }
+        public void TakeDamage(int amount) => _health.TakeDamage(amount);
+
         public void Heal(int amount)
         {
             Console.WriteLine($"You heal {amount}");
-            HP += amount;
-            if (HP > MaxHP) HP = MaxHP;
+            _health.Heal(amount);
         }
-        public void ChangeAttackStrategy(string AttackStrategyName)
-        {
-            _AttackStrategy = AttackStrategy.GetAttackStrategy(AttackStrategyName);
-        }
+
+        public void ChangeAttackStrategy(string strategyName)
+            => _attackStrategy = AttackStrategy.GetAttackStrategy(strategyName);
+
         public void DefeatEnemy(IEnemy enemy)
         {
             Console.WriteLine($"You defeated {enemy.Name}!");
             GainGold(enemy.Gold);
-            bool isLevelUp = experienceManager.GainExperience(enemy.Experience) == 1;
-            if (isLevelUp)
+            bool leveledUp = _experience.GainExperience(enemy.Experience) == 1;
+            if (leveledUp)
             {
-                LevelUp();
+                // レベルアップ：HP+10、DP+1、AP+2
+                _health.LevelUp(hpIncrease: 10, dpIncrease: 1);
+                BaseAP += 2;
             }
         }
-        public void LevelUp()
+
+        public void GainGold(int amt) => _inventory.GainGold(amt);
+        public void BuyPotion(int amt) => _inventory.BuyPotion(amt);
+        public void UsePotion(int amt)
         {
-            HP += 10; // Example level up effect
-            BaseHP += 10; // Increase base HP
-            BaseAP += 2; // Increase base attack power
-            BaseDP += 1; // Increase base defense power
+            _inventory.UsePotion(amt);
+            Heal(10 * amt);
         }
-        public void GainGold(int amount) => inventoryManager.GainGold(amount);
-        public void BuyPotion(int amount) => inventoryManager.BuyPotion(amount);
-        public void UsePotion(int amount)
-        {
-            inventoryManager.UsePotion(amount);
-            Heal(10 * amount);
-        }
-        //disolay all information about the player
+
         public void ShowInfo()
         {
             Console.WriteLine("-------------------------------------------------------------------");
-            Console.WriteLine($"Name: {Name} HP: {HP}/{MaxHP}");
-            inventoryManager.ShowInfo();
-            experienceManager.ShowInfo();
+            Console.WriteLine($"Name: {Name}  HP: {HP}/{MaxHP}  AP: {AP}  DP: {DP}");
+            _inventory.ShowInfo();
+            _experience.ShowInfo();
             Console.WriteLine("-------------------------------------------------------------------");
         }
     }
+
 }

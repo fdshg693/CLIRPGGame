@@ -3,14 +3,21 @@ using GameEngine.Models;
 
 namespace GameEngine.Manager
 {
-    public class InventoryManager
+    public class InventoryManager : IEquipmentStatsProvider
     {
         public int TotalGold { get; private set; } = 50;
-        public IWeapon Weapon { get; private set; } // Player's weapon
+        public IWeapon Weapon { get; private set; }
+        public event Action? EquipmentChanged;
         public int TotalPotions { get; private set; } = 0;
         public InventoryManager()
         {
             Weapon = new Weapon(0, 0, 0, "Default");
+        }
+        public void EquipWeapon(IWeapon newWeapon)
+        {
+            Weapon = newWeapon;
+            EquipmentChanged?.Invoke();
+            Console.WriteLine($"You equipped a {newWeapon.Name}");
         }
         public void GainGold(int amount)
         {
@@ -42,11 +49,6 @@ namespace GameEngine.Manager
             {
                 Console.WriteLine("Not enough potions!");
             }
-        }
-        public void EquipWeapon(IWeapon weapon)
-        {
-            Weapon = weapon;
-            Console.WriteLine($"You equipped a {weapon.Name}");
         }
         public void ShowInfo()
         {
