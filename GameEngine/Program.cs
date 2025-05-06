@@ -15,22 +15,18 @@ namespace CliRpgGame
             string playerName = string.IsNullOrWhiteSpace(input)
                 ? "defaultName"
                 : input;
-            var experienceManager = new ExperienceManager();
-            var inventoryManager = new InventoryManager();
 
-            IPlayer player = new Player(playerName, 100, new DefaultAttackStrategy(), experienceManager, inventoryManager);
+            IPlayer player = new Player(playerName, 100, new DefaultAttackStrategy(), new ExperienceManager(), new InventoryManager());
+            var battle = new GameSystem();
 
             while (true)
             {
-                var battle = new GameSystem();
                 battle.Encounter(player);
                 if (!player.IsAlive)
                 {
                     break;
                 }
                 player.ShowInfo();
-                Console.WriteLine("Press Enter to Start Next Game...");
-                Console.ReadLine();
             }
             Console.WriteLine("Game Over! Press any key to exit.");
             Console.ReadKey();

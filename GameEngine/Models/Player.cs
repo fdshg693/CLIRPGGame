@@ -42,7 +42,11 @@ namespace GameEngine.Models
             target.TakeDamage(damage);
         }
 
-        public void TakeDamage(int amount) => _health.TakeDamage(amount);
+        public void TakeDamage(int amount)
+        {
+            int damage = _health.TakeDamage(amount);
+            Console.WriteLine($"{Name} takes {damage} damage! Remaining HP: {HP}");
+        }
 
         public void Heal(int amount)
         {

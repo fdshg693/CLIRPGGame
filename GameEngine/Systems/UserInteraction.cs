@@ -10,7 +10,7 @@
         /// <summary>
         /// コンソールから「1以上の整数」を入力させ、正しい値が来るまで繰り返すメソッド
         /// </summary>
-        public static int? ReadPositiveInteger(string prompt = "正の整数を入力してください: ", string interruptKeyWord = "Quit")
+        public static int? ReadPositiveInteger(string prompt = "正の整数を入力してください: ", string interruptKeyWord = "Q")
         {
             while (true)
             {
@@ -37,6 +37,41 @@
 
                 Console.WriteLine("正の整数（1以上の整数）を入力してください。");
             }
+        }
+        public static string SelectAttackStrategy()
+        {
+            //Player's turn
+            //Choose attack strategy                
+            var AttackStrategyArray = new string[] { "Default", "Melee", "Magic" };
+            var StrategyIndex = 0;
+            Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
+
+            while (true)
+            {
+                var keyInfo = Console.ReadKey(intercept: true);
+                if (new[] { ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter }.Contains(keyInfo.Key))
+                {
+                    UserInteraction.clearLastOutput();
+                    if (keyInfo.Key == ConsoleKey.LeftArrow)
+                    {
+                        // カーソルを 1 行上に移動（\x1b[1A）して、その行をクリア（\x1b[2K）
+
+                        StrategyIndex = (StrategyIndex - 1 + AttackStrategyArray.Length) % AttackStrategyArray.Length;
+                        Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
+                    }
+                    else if (keyInfo.Key == ConsoleKey.RightArrow)
+                    {
+                        StrategyIndex = (StrategyIndex + 1) % AttackStrategyArray.Length;
+                        Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
+                    }
+                    else if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        break;
+                    }
+                }
+            }
+            return AttackStrategyArray[StrategyIndex];
+
         }
     }
 

@@ -36,6 +36,7 @@ namespace GameEngine.Models
             int damage = amount - BaseDP;
             HP -= damage;
             if (HP < 0) HP = 0;
+            Console.WriteLine($"{Name} takes {damage} damage! Remaining HP: {HP}");
         }
         public void Heal(int amount)
         {

@@ -20,6 +20,7 @@ namespace GameEngine.Systems
                 default:
                     Console.WriteLine("You encounter a wild enemy!");
                     BattleStart(player);
+                    RestSystem.UsePotion(player);
                     break;
             }
         }
@@ -30,41 +31,12 @@ namespace GameEngine.Systems
 
             while (player.IsAlive && enemy.IsAlive)
             {
-                //Player's turn
-                //Choose attack strategy                
-                var AttackStrategyArray = new string[] { "Default", "Melee", "Magic" };
-                var StrategyIndex = 0;
-                Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
-
-                while (true)
-                {
-                    var keyInfo = Console.ReadKey(intercept: true);
-                    if (new[] { ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter }.Contains(keyInfo.Key))
-                    {
-                        UserInteraction.clearLastOutput();
-                        if (keyInfo.Key == ConsoleKey.LeftArrow)
-                        {
-                            // カーソルを 1 行上に移動（\x1b[1A）して、その行をクリア（\x1b[2K）
-
-                            StrategyIndex = (StrategyIndex - 1 + AttackStrategyArray.Length) % AttackStrategyArray.Length;
-                            Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
-                        }
-                        else if (keyInfo.Key == ConsoleKey.RightArrow)
-                        {
-                            StrategyIndex = (StrategyIndex + 1) % AttackStrategyArray.Length;
-                            Console.WriteLine($"Selected Attack Strategy: {AttackStrategyArray[StrategyIndex]}");
-                        }
-                        else if (keyInfo.Key == ConsoleKey.Enter)
-                        {
-                            break;
-                        }
-                    }
-                }
-                player.ChangeAttackStrategy(AttackStrategyArray[StrategyIndex]);
+                var attackStrategyName = UserInteraction.SelectAttackStrategy();
+                player.ChangeAttackStrategy(attackStrategyName);
 
                 //Damage calculation
                 player.Attack(enemy);
-                Console.WriteLine($"{player.Name} attacks {enemy.Name} by {AttackStrategyArray[StrategyIndex]}");
+                Console.WriteLine($"{player.Name} attacks {enemy.Name} by {attackStrategyName}");
 
                 //Player wins
                 if (!enemy.IsAlive)

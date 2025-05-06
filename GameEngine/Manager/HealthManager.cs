@@ -36,10 +36,11 @@ namespace GameEngine.Manager
         }
 
         // ダメージ処理
-        public void TakeDamage(int rawDamage)
+        public int TakeDamage(int rawDamage)
         {
             var damage = Math.Max(rawDamage - TotalDP, 0);
             CurrentHP = Math.Max(CurrentHP - damage, 0);
+            return damage;
         }
 
         // 回復処理
