@@ -78,6 +78,9 @@ namespace GameEngine.Models
             Heal(10 * amt);
         }
 
+        public int ReturnTotalPotions() => _inventory.ReturnTotalPotions();
+        public int ReturnTotalGold() => _inventory.ReturnTotalGold();
+
         public void ShowInfo()
         {
             Console.WriteLine("-------------------------------------------------------------------");

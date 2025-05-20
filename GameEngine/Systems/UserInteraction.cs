@@ -2,6 +2,12 @@
 {
     public static class UserInteraction
     {
+        /// <summary>
+        /// Clears the last line of output from the console.
+        /// </summary>
+        /// <remarks>This method moves the cursor up by one line and clears the entire line, effectively
+        /// removing         the most recent output from the console. It is useful for scenarios where the last output  
+        /// needs to be erased or replaced.</remarks>
         public static void clearLastOutput()
         {
             Console.Write("\x1b[1A");  // 上へカーソル移動

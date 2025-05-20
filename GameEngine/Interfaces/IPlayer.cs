@@ -8,5 +8,7 @@
         void EquipWeapon(IWeapon weapon);
         void ShowInfo();
         void UsePotion(int amount);
+        int ReturnTotalPotions();
+        int ReturnTotalGold();
     }
 }

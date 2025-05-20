@@ -17,16 +17,27 @@ namespace GameEngine.Models
     public class DefaultAttackStrategy : IAttackStrategy
     {
         public int ExecuteAttack() => new Random().Next(8, 10);
-
+        public string GetAttackStrategyName()
+        {
+            return "Default";
+        }
     }
     public class MeleeAttackStrategy : IAttackStrategy
     {
         public int ExecuteAttack() => new Random().Next(10, 16);
+        public string GetAttackStrategyName()
+        {
+            return "Melee";
+        }
     }
 
     public class MagicAttackStrategy : IAttackStrategy
     {
         public int ExecuteAttack() => new Random().Next(0, 25);
-    }
 
+        public string GetAttackStrategyName()
+        {
+            return "Magic";
+        }
+    }
 }

@@ -24,8 +24,8 @@ namespace GameEngine.Factory
         {
             try
             {
+                //YAMLファイルから敵の仕様を読み込む
                 var yaml = File.ReadAllText("./enemy-specs.yml");
-                Console.WriteLine(yaml); // デバッグ用
                 var deserializer = new DeserializerBuilder()
                 .Build();
 

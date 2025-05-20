@@ -4,5 +4,6 @@
     {
         int Experience { get; }
         int Gold { get; }
+        IAttackStrategy _attackStrategy { get; }
     }
 }

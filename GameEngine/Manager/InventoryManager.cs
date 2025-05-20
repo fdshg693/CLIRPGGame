@@ -50,6 +50,14 @@ namespace GameEngine.Manager
                 Console.WriteLine("Not enough potions!");
             }
         }
+        public int ReturnTotalPotions()
+        {
+            return TotalPotions;
+        }
+        public int ReturnTotalGold()
+        {
+            return TotalGold;
+        }
         public void ShowInfo()
         {
             Console.WriteLine($"Total Gold: {TotalGold}");

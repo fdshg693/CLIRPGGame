@@ -21,11 +21,13 @@ namespace CliRpgGame
 
             while (true)
             {
+                //イベントを発生させる
                 battle.Encounter(player);
                 if (!player.IsAlive)
                 {
                     break;
                 }
+                //プレイヤーが生きている場合、情報を表示する
                 player.ShowInfo();
             }
             Console.WriteLine("Game Over! Press any key to exit.");
